@@ -1,4 +1,4 @@
-import db from './private';
+import { db } from './private';
 
 if (process.env.NODE_ENV === 'production') {
 	module.exports = {

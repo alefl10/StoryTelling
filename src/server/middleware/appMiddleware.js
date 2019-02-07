@@ -4,6 +4,7 @@ import methodOverride from 'method-override';
 import flash from 'connect-flash';
 import session from 'express-session';
 import passport from 'passport';
+import { passportSecret } from '../../config/private';
 
 export default function (app) {
 	// Set up passport strategy
@@ -21,7 +22,7 @@ export default function (app) {
 
 	// Express session Middleware
 	app.use(session({
-		secret: 'secret', // This could be anything
+		secret: passportSecret, // This could be anything
 		resave: true,
 		saveUninitialized: true,
 	}));
