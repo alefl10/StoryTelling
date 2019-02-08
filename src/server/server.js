@@ -2,6 +2,8 @@ import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import appMiddleware from './middleware/appMiddleware';
+import { auth } from './routes/routes';
+
 
 const { db } = require('../config/database');
 
@@ -30,6 +32,7 @@ app.get('/about', (req, res) => {
 	res.render('about');
 });
 
-// // Use routes
+// Use routes
+app.use('/auth', auth);
 
 export default app;

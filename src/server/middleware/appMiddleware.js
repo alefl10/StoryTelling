@@ -4,10 +4,12 @@ import methodOverride from 'method-override';
 import flash from 'connect-flash';
 import session from 'express-session';
 import passport from 'passport';
+import strategy from '../../config/passport';
 import { passportSecret } from '../../config/private';
 
 export default function (app) {
 	// Set up passport strategy
+	strategy(passport);
 
 	// Handlebars Middleware
 	app.engine('handlebars', hb({ defaultLayout: 'main' }));
