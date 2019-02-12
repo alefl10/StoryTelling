@@ -4,8 +4,12 @@ import mongoose from 'mongoose';
 import appMiddleware from './middleware/appMiddleware';
 import { auth } from './routes/routes';
 
-
 const { db } = require('../config/database');
+
+// Connect to mongoose
+mongoose.connect(db.mongoURI, { useNewUrlParser: true })
+	.then(() => console.log('MongoDB Connected...'))
+	.catch(err => console.log(err));
 
 const app = express();
 
@@ -13,11 +17,6 @@ appMiddleware(app);
 
 // Static Folder
 app.use(express.static(path.join(__dirname, '../..', 'public')));
-
-// Connect to mongoose
-mongoose.connect(db.mongoURI, { useNewUrlParser: true })
-	.then(() => console.log('MongoDB Connected...'))
-	.catch(err => console.log(err));
 
 // Index Route
 app.get('/', (req, res) => {

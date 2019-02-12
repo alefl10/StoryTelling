@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import flash from 'connect-flash';
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import strategy from '../../config/passport';
 import { passportSecret } from '../../config/private';
@@ -22,14 +23,16 @@ export default function (app) {
 	// Mehod override Middleware
 	app.use(methodOverride('_method'));
 
+	app.use(cookieParser());
+
 	// Express session Middleware
 	app.use(session({
 		secret: passportSecret, // This could be anything
-		resave: true,
+		resave: false,
 		saveUninitialized: true,
 	}));
 
-	// Passport middleware
+	// Passport Middleware
 	app.use(passport.initialize());
 	app.use(passport.session());
 

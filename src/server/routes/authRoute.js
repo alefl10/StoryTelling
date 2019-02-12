@@ -9,4 +9,7 @@ router.route('/google')
 router.route('/google/callback')
 	.get(controller.getAuthCallback, controller.getDashboard);
 
+router.route('/logout')
+	.get(controller.getLogout);
+
 export default router;

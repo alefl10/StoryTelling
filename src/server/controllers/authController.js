@@ -9,8 +9,13 @@ const controller = {
 		passport.authenticate('google', { failureRedirect: '/' })(req, res, next);
 	},
 
-	getDashboard(req, res, next) {
+	getDashboard(req, res) {
 		res.redirect('/dashboard');
+	},
+
+	getLogout(req, res) {
+		req.logout();
+		res.redirect('/');
 	},
 };
 
