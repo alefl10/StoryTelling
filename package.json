@@ -5,9 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon --exec babel-node ./src/index.js",
-    "start": "npm run build && node ./build/index.js",
-    "build": "npm run clean && npm run babel-build",
-    "babel-build": "babel -d ./build ./src -s",
+    "build": "npm run clean && npm run babel-build && node ./build/index.js",
+    "babel-build": "babel -d ./build ./src -s ",
     "clean": "rm -rf build && mkdir build"
   },
   "author": "Alejandro Ferrero",

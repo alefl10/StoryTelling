@@ -21,10 +21,7 @@ mongoose.connect(db.mongoURI, { useNewUrlParser: true })
 
 // Index Route
 app.get('/', (req, res) => {
-	const title = 'Welcome!';
-	res.render('index', {
-		title,
-	});
+	res.send('Hello world!');
 });
 
 // About route
