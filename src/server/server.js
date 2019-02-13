@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import appMiddleware from './middleware/appMiddleware';
-import { auth } from './routes/routes';
+import { index, about, auth } from './routes/routes';
 
 const { db } = require('../config/database');
 
@@ -18,17 +18,9 @@ appMiddleware(app);
 // Static Folder
 app.use(express.static(path.join(__dirname, '../..', 'public')));
 
-// Index Route
-app.get('/', (req, res) => {
-	res.send('Hello world!');
-});
-
-// About route
-app.get('/about', (req, res) => {
-	res.render('about');
-});
-
 // Use routes
+app.use('/', index);
+app.use('/about', about);
 app.use('/auth', auth);
 
 export default app;
