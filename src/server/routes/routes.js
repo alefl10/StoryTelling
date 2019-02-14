@@ -1,9 +1,9 @@
 import index from './indexRoute';
-import about from './aboutRoute';
 import auth from './authRoute';
+import stories from './storiesRoute';
 
 module.exports = {
 	index,
-	about,
+	stories,
 	auth,
 };

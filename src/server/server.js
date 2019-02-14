@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import appMiddleware from './middleware/appMiddleware';
-import { index, about, auth } from './routes/routes';
+import { index, stories, auth } from './routes/routes';
 
 const { db } = require('../config/database');
 
@@ -20,7 +20,8 @@ app.use(express.static(path.join(__dirname, '../..', 'public')));
 
 // Use routes
 app.use('/', index);
-app.use('/about', about);
 app.use('/auth', auth);
+app.use('/stories', stories);
+
 
 export default app;
