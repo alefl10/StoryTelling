@@ -3,30 +3,57 @@
     <form action="/stories" method="POST" class="col s12">
         <div class="row">
             <div class="input-field">
-                <input type="text" name="title">
+                <input type="text" name="title" value="{{title}}" required>
                 <label for="title">Title</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field">
                 <select name="status">
-                    <option value="public" selected>Public</option>
-                    <option value="private">Private</option>
-                    <option value="unpublished">Unpublished</option>
+                    {{#if public}}
+                        <option value="public" selected>Public</option>
+                        <option value="private">Private</option>
+                        <option value="unpublished">Unpublished</option>
+                    {{else if private}}
+                        <option value="public">Public</option>
+                        <option value="private" selected>Private</option>
+                        <option value="unpublished">Unpublished</option>
+                    {{else if unpublished}}
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                        <option value="unpublished" selected>Unpublished</option>
+                    {{else}}
+                        <option value="public" selected>Public</option>
+                        <option value="private">Private</option>
+                        <option value="unpublished">Unpublished</option>
+                    {{/if}}
+                    
                 </select>
                 <label for="status">Status</label>
             </div>
         </div>
         <div class="row">
-            <p>
-                <input type="checkbox" name="allowComments" class="filled-in" id="filled-in-box" checked="checked">
-                <label for="filled-in-boxgit">Allow Comments</label>
-            </p>
+            {{#if checked}}
+                <p>
+                    <input type="checkbox" name="allowComments" class="filled-in" id="checked" checked="checked">
+                    <label for="checked">Allow Comments</label>
+                </p> 
+            {{else if unchecked}}
+                <p>
+                    <input type="checkbox" name="allowComments" class="filled-in" id="unchecked">
+                    <label for="unchecked">Allow Comments</label>
+                </p>  
+            {{else}}
+                <p>
+                    <input type="checkbox" name="allowComments" class="filled-in" id="unchecked" checked="checked">
+                    <label for="unchecked">Allow Comments</label>
+                </p>  
+            {{/if}}
         </div>
         <div class="row">
             <div class="input-field">
                 <h5>Tell us your amazing St0ry</h5>
-                <textarea name="body"></textarea>
+                <textarea name="body" required>{{body}}</textarea>
             </div>
         </div>
         <input type="submit" value="Save" class="btn">
