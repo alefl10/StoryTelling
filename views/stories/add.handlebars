@@ -33,20 +33,15 @@
             </div>
         </div>
         <div class="row">
-            {{#if checked}}
-                <p>
-                    <input type="checkbox" name="allowComments" class="filled-in" id="checked" checked="checked">
-                    <label for="checked">Allow Comments</label>
-                </p> 
-            {{else if unchecked}}
+            {{#if unchecked}}
                 <p>
                     <input type="checkbox" name="allowComments" class="filled-in" id="unchecked">
                     <label for="unchecked">Allow Comments</label>
-                </p>  
+                </p>
             {{else}}
                 <p>
-                    <input type="checkbox" name="allowComments" class="filled-in" id="unchecked" checked="checked">
-                    <label for="unchecked">Allow Comments</label>
+                    <input type="checkbox" name="allowComments" class="filled-in" id="checked" checked="checked">
+                    <label for="checked">Allow Comments</label>
                 </p>  
             {{/if}}
         </div>

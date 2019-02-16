@@ -14,7 +14,7 @@ const controller = {
 
 	postStory(req, res) {
 		const errors = [];
-		const checkedUnchecked = { checkedUnchecked: 'checked' };
+		let unchecked;
 		const {
 			title,
 			body,
@@ -30,7 +30,7 @@ const controller = {
 			if (allowComments) {
 				allowComments = true;
 			} else {
-				checkedUnchecked.checkedUnchecked = 'unchecked';
+				unchecked = 'unchecked';
 				allowComments = false;
 			}
 			const newStory = new Story({
@@ -55,7 +55,7 @@ const controller = {
 							title,
 							body,
 							[status]: status,
-							[checkedUnchecked.checkedUnchecked]: checkedUnchecked.checkedUnchecked,
+							unchecked,
 						});
 					} else {
 						errors.push({ error_msg: 'There was a fatal error saving your St0ry' });
@@ -64,7 +64,7 @@ const controller = {
 							title,
 							body,
 							[status]: status,
-							[checkedUnchecked.checkedUnchecked]: checkedUnchecked.checkedUnchecked,
+							unchecked,
 						});
 					}
 				});
