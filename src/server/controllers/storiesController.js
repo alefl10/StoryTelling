@@ -53,7 +53,7 @@ const controller = {
 				.then((savedStory) => {
 					console.log(`New st0ry was saved:\n${savedStory}`);
 					req.flash('success_msg', 'You just added a new story!');
-					res.redirect(`/stories/show/${savedStory._id}`);
+					res.redirect('/dashboard');
 				})
 				.catch((err) => {
 					console.log(err);
@@ -81,11 +81,24 @@ const controller = {
 	},
 
 	getStory(req, res) {
-		Story.findOne({ _id: req.params.id }) // Populates user with all the fields from the users collection - story has a reference to this collection
-			.populate('user')
+		Story.findById({ _id: req.params.id })
+			.populate('user') // Populates user with all the fields from the users collection - story has a reference to this collection
 			.then((story) => {
 				console.log(story);
 				res.render('stories/show', { story });
+			})
+			.catch((err) => {
+				console.log(`ERROR Retrieving story with id --> ${req.body.id}\n${err}`);
+				req.flash('error_msg', 'Could not find any stories with that id');
+				res.redirect('/stories');
+			});
+	},
+
+	getEdit(req, res) {
+		Story.findById({ _id: req.params.id })
+			.then((story) => {
+				console.log(story);
+				res.render('stories/edit', { story });
 			})
 			.catch((err) => {
 				console.log(`ERROR Retrieving story with id --> ${req.body.id}\n${err}`);

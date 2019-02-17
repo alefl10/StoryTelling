@@ -27,3 +27,7 @@ footer {
 #delete-form {
     display: inline;
 }
+
+table {
+    margin-bottom: 40px;
+}
