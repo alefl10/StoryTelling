@@ -2,7 +2,18 @@ import Story from '../models/StoryModel';
 
 const controller = {
 	getIndex(req, res) {
-		res.render('stories/index');
+		const errors = [];
+		Story.find({ status: 'public' })
+			.populate('user') // Populates user with all the fields from the users collection - story has a reference to this collection
+			.then((stories) => {
+				console.log(stories);
+				res.render('stories/index', { stories });
+			})
+			.catch((err) => {
+				console.log(`Error Retrieving Public Stories:\n${err}`);
+				errors.push({ error_msg: 'There was an ERROR RETRIEVING PUBLIC STORIES' });
+				res.render('stories/index');
+			});
 	},
 
 	getAdd(req, res) {
@@ -43,6 +54,7 @@ const controller = {
 
 			newStory.save()
 				.then((savedStory) => {
+					console.log(`New st0ry was saved:\n${savedStory}`);
 					req.flash('success_msg', 'You just added a new story!');
 					res.redirect('stories/show/');
 				})
