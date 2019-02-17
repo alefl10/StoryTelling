@@ -109,16 +109,12 @@ const controller = {
 	},
 
 	updateOne(req, res) {
-
-		const errors = [];
 		const { title, body, status } = req.body;
 		let { allowComments } = req.body;
-		let unchecked;
 
 		if (allowComments) {
 			allowComments = true;
 		} else {
-			unchecked = 'unchecked';
 			allowComments = false;
 		}
 
@@ -135,7 +131,7 @@ const controller = {
 
 					Story.findOneAndUpdate(req.params.id, updateStory)
 						.then((updatedStory) => {
-							console.log(`Story with id --> ${req.params.id} was partially updated updated:\n${updateStory}`);
+							console.log(`Story with id --> ${req.params.id} was partially updated updated:\n`, updatedStory);
 							req.flash('warning_msg', `Your st0ry could only be partially updated because the title '${req.body.title}' already exists`);
 							res.redirect('/dashboard');
 						})
@@ -154,7 +150,7 @@ const controller = {
 
 					Story.findOneAndUpdate(req.params.id, updateStory)
 						.then((updatedStory) => {
-							console.log(`Story with id --> ${req.params.id} was updated:\n${updateStory}`);
+							console.log(`Story with id --> ${req.params.id} was updated:\n`, updatedStory);
 							req.flash('success_msg', `You successfully updated your st0ry: '${updateStory.title}'`);
 							res.redirect('/dashboard');
 						})
@@ -166,15 +162,23 @@ const controller = {
 				}
 			})
 			.catch((err) => {
-				console.log(err);
-				errors.push({ error_msg: 'There was a fatal error updating that title' });
-				res.render('stories/add', {
-					errors,
-					title,
-					body,
-					[status]: status,
-					unchecked,
-				});
+				console.log(`ERROR Updating story with title --> ${req.body.title}\n${err}`);
+				req.flash('error_msg', 'There was a fatal error updating that title');
+				res.redirect('/dashboard');
+			});
+	},
+
+	deleteOne(req, res) {
+		Story.remove({ _id: req.params.id })
+			.then((removedStory) => {
+				console.log(`Story with id --> ${req.params.id} was removed:\n`, removedStory);
+				req.flash('success_msg', 'You successfully removed your st0ry!');
+				res.redirect('/dashboard');
+			})
+			.catch((err) => {
+				console.log(`ERROR Deleting story with id --> ${req.params.id}\n${err}`);
+				req.flash('error_msg', 'There was an error deleting your st0ry');
+				res.redirect('/dashboard');
 			});
 	},
 };

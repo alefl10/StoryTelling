@@ -10,7 +10,8 @@ router.route('/')
 	.post(controller.postStory);
 
 router.route('/:id')
-	.put(ensureAuthenticated, controller.updateOne);
+	.put(ensureAuthenticated, controller.updateOne)
+	.delete(ensureAuthenticated, controller.deleteOne);
 
 // Add Story Form
 router.route('/add')
