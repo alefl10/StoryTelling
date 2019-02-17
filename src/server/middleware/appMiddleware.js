@@ -6,7 +6,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import strategy from '../../config/passport';
-import { truncate, stripTags } from '../../helpers/hbs';
+import { truncate, stripTags, formatDate } from '../../helpers/hbs';
 import { passportSecret } from '../../config/private';
 
 export default function (app) {
@@ -18,13 +18,14 @@ export default function (app) {
 		helpers: {
 			truncate,
 			stripTags,
+			formatDate,
 		},
 		defaultLayout: 'main',
 	}));
 	app.set('view engine', 'handlebars');
 
 	// Body Parser Middleware + Parse application/json
-	app.use(bodyParser.urlencoded({ extended: false }));
+	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(bodyParser.json());
 
 	// Mehod override Middleware

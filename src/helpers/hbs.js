@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 module.exports = {
 	truncate(str, length) {
 		if (str.length > length && str.length > 0) {
@@ -12,5 +14,9 @@ module.exports = {
 
 	stripTags(input) {
 		return input.replace(/<(?:.|\n)*?>/gm, '');
+	},
+
+	formatDate(date, format) {
+		return moment(date).format(format);
 	},
 };
