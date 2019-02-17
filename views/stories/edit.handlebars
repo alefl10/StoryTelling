@@ -1,6 +1,7 @@
 <h1>Edit St0ry</h1>
 <div class="row">
-    <form action="/stories" method="POST" class="col s12">
+    <form action="/stories/{{story.id}}?_method=PUT" method="POST" class="col s12">
+        <input type="hidden" name="_method" value="PUT">
         <div class="row">
             <div class="input-field">
                 <input type="text" name="title" value="{{story.title}}" required>
@@ -10,42 +11,21 @@
         <div class="row">
             <div class="input-field">
                 <select name="status">
-                    {{#if public}}
-                    <option value="public" selected>Public</option>
-                    <option value="private">Private</option>
-                    <option value="unpublished">Unpublished</option>
-                    {{else if private}}
-                    <option value="public">Public</option>
-                    <option value="private" selected>Private</option>
-                    <option value="unpublished">Unpublished</option>
-                    {{else if unpublished}}
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                    <option value="unpublished" selected>Unpublished</option>
-                    {{else}}
                     {{#select story.status}}
                     <option value="public" selected>Public</option>
                     <option value="private">Private</option>
                     <option value="unpublished">Unpublished</option>
                     {{/select}}
-                    {{/if}}
-
                 </select>
                 <label for="status">Status</label>
             </div>
         </div>
         <div class="row">
-            {{#if unchecked}}
             <p>
-                <input type="checkbox" name="allowComments" class="filled-in" id="unchecked">
-                <label for="unchecked">Allow Comments</label>
-            </p>
-            {{else}}
-            <p>
-                <input type="checkbox" name="allowComments" class="filled-in" id="checked" {{#if story.allowComments}} checked="checked" {{/if}}>
+                <input type="checkbox" name="allowComments" class="filled-in" id="checked" {{#if story.allowComments}}
+                    checked="checked" {{/if}}>
                 <label for="checked">Allow Comments</label>
             </p>
-            {{/if}}
         </div>
         <div class="row">
             <div class="input-field">
@@ -53,6 +33,6 @@
                 <textarea name="body" required>{{story.body}}</textarea>
             </div>
         </div>
-        <input type="submit" value="Save" class="btn">
+        <input type="submit" value="Confirm Edit" class="btn">
     </form>
 </div>

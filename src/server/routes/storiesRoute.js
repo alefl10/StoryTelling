@@ -9,6 +9,9 @@ router.route('/')
 	.get(controller.getStories)
 	.post(controller.postStory);
 
+router.route('/:id')
+	.put(ensureAuthenticated, controller.updateOne);
+
 // Add Story Form
 router.route('/add')
 	.get(ensureAuthenticated, controller.getAdd);

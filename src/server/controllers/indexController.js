@@ -7,6 +7,7 @@ const controller = {
 
 	getDashboard(req, res) {
 		Story.find({ user: req.user.id }) // It retrieves all the story that have the same user id
+			.sort('title')
 			.then((stories) => {
 				res.render('index/dashboard', { stories });
 			})

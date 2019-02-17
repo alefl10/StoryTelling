@@ -29,7 +29,7 @@ export default function (app) {
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(bodyParser.json());
 
-	// Mehod override Middleware
+	// Mehod Override Middleware
 	app.use(methodOverride('_method'));
 
 	app.use(cookieParser());

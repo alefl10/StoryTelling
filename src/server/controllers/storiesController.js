@@ -4,6 +4,7 @@ const controller = {
 	getStories(req, res) {
 		const errors = [];
 		Story.find({ status: 'public' })
+			.sort('title')
 			.populate('user') // Populates user with all the fields from the users collection - story has a reference to this collection
 			.then((stories) => {
 				console.log(stories);
@@ -88,7 +89,7 @@ const controller = {
 				res.render('stories/show', { story });
 			})
 			.catch((err) => {
-				console.log(`ERROR Retrieving story with id --> ${req.body.id}\n${err}`);
+				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}`);
 				req.flash('error_msg', 'Could not find any stories with that id');
 				res.redirect('/stories');
 			});
@@ -101,9 +102,79 @@ const controller = {
 				res.render('stories/edit', { story });
 			})
 			.catch((err) => {
-				console.log(`ERROR Retrieving story with id --> ${req.body.id}\n${err}`);
+				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}`);
 				req.flash('error_msg', 'Could not find any stories with that id');
 				res.redirect('/stories');
+			});
+	},
+
+	updateOne(req, res) {
+
+		const errors = [];
+		const { title, body, status } = req.body;
+		let { allowComments } = req.body;
+		let unchecked;
+
+		if (allowComments) {
+			allowComments = true;
+		} else {
+			unchecked = 'unchecked';
+			allowComments = false;
+		}
+
+		Story.findOne({ title: req.body.title })
+			.then((story) => {
+				if (story && story._id.toString() !== req.params.id) {
+					console.log(`This title exists already --> ${req.body.title}`);
+
+					const updateStory = {
+						body,
+						status,
+						allowComments,
+					};
+
+					Story.findOneAndUpdate(req.params.id, updateStory)
+						.then((updatedStory) => {
+							console.log(`Story with id --> ${req.params.id} was partially updated updated:\n${updateStory}`);
+							req.flash('warning_msg', `Your st0ry could only be partially updated because the title '${req.body.title}' already exists`);
+							res.redirect('/dashboard');
+						})
+						.catch((err) => {
+							console.log(`ERROR Updating story with id --> ${req.params.id}\n${err}`);
+							req.flash('error_msg', `Could not update st0ry: ${req.body.title}`);
+							res.redirect('/dashboard');
+						});
+				} else {
+					const updateStory = {
+						title,
+						body,
+						status,
+						allowComments,
+					};
+
+					Story.findOneAndUpdate(req.params.id, updateStory)
+						.then((updatedStory) => {
+							console.log(`Story with id --> ${req.params.id} was updated:\n${updateStory}`);
+							req.flash('success_msg', `You successfully updated your st0ry: '${updateStory.title}'`);
+							res.redirect('/dashboard');
+						})
+						.catch((err) => {
+							console.log(`ERROR Updating story with id --> ${req.params.id}\n${err}`);
+							req.flash('error_msg', `Could not update st0ry: ${req.body.title}`);
+							res.redirect('/dashboard');
+						});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				errors.push({ error_msg: 'There was a fatal error updating that title' });
+				res.render('stories/add', {
+					errors,
+					title,
+					body,
+					[status]: status,
+					unchecked,
+				});
 			});
 	},
 };
