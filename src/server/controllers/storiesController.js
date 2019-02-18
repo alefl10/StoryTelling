@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import Story from '../models/StoryModel';
 
 const controller = {
@@ -91,6 +92,44 @@ const controller = {
 			.catch((err) => {
 				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}\n`);
 				req.flash('error_msg', 'Could not find any stories with that id');
+				res.redirect('/stories');
+			});
+	},
+
+	getUserStories(req, res) {
+		Story.find({ user: Types.ObjectId(req.params.userId), status: 'public' })
+			.populate('user')
+			.then((stories) => {
+				console.log(stories);
+				if (stories) {
+					res.render('stories/index', { stories });
+				} else {
+					req.flash('warning_msg', 'That user does not have any stories or does not exist');
+					res.redirect('/stories');
+				}
+			})
+			.catch((err) => {
+				console.log(`ERROR Retrieving stories from user with id --> ${req.params.userId}\n${err}\n`);
+				req.flash('error_msg', 'Failed to find user or his/her stories');
+				res.redirect('/stories');
+			});
+	},
+
+	getMyStories(req, res) {
+		Story.find({ user: Types.ObjectId(req.user.id) })
+			.populate('user')
+			.then((stories) => {
+				console.log(stories);
+				if (stories) {
+					res.render('stories/index', { stories });
+				} else {
+					req.flash('warning_msg', 'You are a user with no stories or you do not exist...');
+					res.redirect('/stories');
+				}
+			})
+			.catch((err) => {
+				console.log(`ERROR Retrieving stories from user with id --> ${req.params.userId}\n${err}\n`);
+				req.flash('error_msg', 'Failed to find user or his/her stories');
 				res.redirect('/stories');
 			});
 	},

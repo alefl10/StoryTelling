@@ -21,11 +21,19 @@ router.route('/add')
 router.route('/show/:id')
 	.get(controller.getStory);
 
+// Get specific user's stories
+router.route('/user/:userId')
+	.get(controller.getUserStories);
+
 // Show Single Story based on id parameter
 router.route('/edit/:id')
 	.get(ensureAuthenticated, controller.getEdit);
 
+// Post a Comment
 router.route('/comment/:id')
 	.post(controller.postComment);
+
+router.route('/my')
+	.get(ensureAuthenticated, controller.getMyStories);
 
 export default router;
