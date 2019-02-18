@@ -6,8 +6,14 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import strategy from '../../config/passport';
-import { truncate, stripTags, formatDate, select } from '../../helpers/hbs';
 import { passportSecret } from '../../config/private';
+import {
+	truncate,
+	stripTags,
+	formatDate,
+	select,
+	editIcon,
+} from '../../helpers/hbs';
 
 export default function (app) {
 	// Set up passport strategy
@@ -20,6 +26,7 @@ export default function (app) {
 			stripTags,
 			formatDate,
 			select,
+			editIcon,
 		},
 		defaultLayout: 'main',
 	}));

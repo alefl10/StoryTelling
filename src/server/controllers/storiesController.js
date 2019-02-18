@@ -4,7 +4,7 @@ const controller = {
 	getStories(req, res) {
 		const errors = [];
 		Story.find({ status: 'public' })
-			.sort('title')
+			.sort({ date: 'desc' })
 			.populate('user') // Populates user with all the fields from the users collection - story has a reference to this collection
 			.then((stories) => {
 				res.render('stories/index', { stories });
@@ -98,8 +98,13 @@ const controller = {
 	getEdit(req, res) {
 		Story.findById({ _id: req.params.id })
 			.then((story) => {
-				console.log(story);
-				res.render('stories/edit', { story });
+				console.log('Story to be edited\n', story);
+				if (story.user.toString() !== req.user.id.toString()) {
+					req.flash('error_msg', 'You are not authorized to edit that story');
+					res.redirect('/stories');
+				} else {
+					res.render('stories/edit', { story });
+				}
 			})
 			.catch((err) => {
 				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}\n`);
