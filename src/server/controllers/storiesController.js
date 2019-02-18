@@ -92,12 +92,12 @@ const controller = {
 				} else {
 					if (req.user) { // Is there a logged in user?
 						if (req.user.id.toString() === story.user._id.toString()) {
-
+							res.render('stories/show', { story });
 						} else {
 							req.flash('error_msg', 'You are not authorized to edit this st0ry');
 							res.redirect('/stories');
 						}
-					} else  {
+					} else {
 						req.flash('error_msg', 'You need to log in to edit this story');
 						res.redirect('/stories');
 					}
