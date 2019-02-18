@@ -87,7 +87,21 @@ const controller = {
 			.populate('comments.commentUser')
 			.then((story) => {
 				console.log(story);
-				res.render('stories/show', { story });
+				if (story.status === 'public') {
+					res.render('stories/show', { story });
+				} else {
+					if (req.user) { // Is there a logged in user?
+						if (req.user.id.toString() === story.user._id.toString()) {
+
+						} else {
+							req.flash('error_msg', 'You are not authorized to edit this st0ry');
+							res.redirect('/stories');
+						}
+					} else  {
+						req.flash('error_msg', 'You need to log in to edit this story');
+						res.redirect('/stories');
+					}
+				}
 			})
 			.catch((err) => {
 				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}\n`);
@@ -162,9 +176,9 @@ const controller = {
 			allowComments = false;
 		}
 
-		Story.findOne({ title: req.body.title })
+		Story.findOne({ title })
 			.then((story) => {
-				if (story && story._id.toString() !== req.params.id) {
+				if (story && story._id.toString() !== req.params.id.toString()) {
 					console.log(`This title exists already --> ${req.body.title}`);
 
 					const updateStory = {
@@ -186,16 +200,18 @@ const controller = {
 						});
 				} else {
 					const updateStory = {
-						title,
 						body,
 						status,
 						allowComments,
 					};
+					if (!story) {
+						updateStory.title = title;
+					}
 
 					Story.findOneAndUpdate(req.params.id, updateStory)
 						.then((updatedStory) => {
 							console.log(`Story with id --> ${req.params.id} was updated:\n`, updatedStory);
-							req.flash('success_msg', `You successfully updated your st0ry: '${updateStory.title}'`);
+							req.flash('success_msg', `You successfully updated your st0ry: '${title}'`);
 							res.redirect('/dashboard');
 						})
 						.catch((err) => {
