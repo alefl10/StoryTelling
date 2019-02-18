@@ -7,11 +7,10 @@ const controller = {
 			.sort('title')
 			.populate('user') // Populates user with all the fields from the users collection - story has a reference to this collection
 			.then((stories) => {
-				console.log(stories);
 				res.render('stories/index', { stories });
 			})
 			.catch((err) => {
-				console.log(`ERROR Retrieving Public Stories:\n${err}`);
+				console.log(`ERROR Retrieving Public Stories:\n${err}\n`);
 				errors.push({ error_msg: 'There was an ERROR RETRIEVING PUBLIC STORIES' });
 				res.render('stories/index');
 			});
@@ -52,12 +51,12 @@ const controller = {
 
 			newStory.save()
 				.then((savedStory) => {
-					console.log(`New st0ry was saved:\n${savedStory}`);
+					console.log(`New st0ry was saved:\n${savedStory}\n`);
 					req.flash('success_msg', 'You just added a new story!');
 					res.redirect('/dashboard');
 				})
 				.catch((err) => {
-					console.log(err);
+					console.log(`ERROR Saving new story:\n${err}\n`);
 					if (err.code === 11000) {
 						errors.push({ error_msg: 'That title has already been used.\nPlease, choose a different title.' });
 						res.render('stories/add', {
@@ -89,7 +88,7 @@ const controller = {
 				res.render('stories/show', { story });
 			})
 			.catch((err) => {
-				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}`);
+				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}\n`);
 				req.flash('error_msg', 'Could not find any stories with that id');
 				res.redirect('/stories');
 			});
@@ -102,7 +101,7 @@ const controller = {
 				res.render('stories/edit', { story });
 			})
 			.catch((err) => {
-				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}`);
+				console.log(`ERROR Retrieving story with id --> ${req.params.id}\n${err}\n`);
 				req.flash('error_msg', 'Could not find any stories with that id');
 				res.redirect('/stories');
 			});
@@ -155,14 +154,14 @@ const controller = {
 							res.redirect('/dashboard');
 						})
 						.catch((err) => {
-							console.log(`ERROR Updating story with id --> ${req.params.id}\n${err}`);
+							console.log(`ERROR Updating story with id --> ${req.params.id}\n${err}\n`);
 							req.flash('error_msg', `Could not update st0ry: ${req.body.title}`);
 							res.redirect('/dashboard');
 						});
 				}
 			})
 			.catch((err) => {
-				console.log(`ERROR Updating story with title --> ${req.body.title}\n${err}`);
+				console.log(`ERROR Updating story with title --> ${req.body.title}\n${err}\n`);
 				req.flash('error_msg', 'There was a fatal error updating that title');
 				res.redirect('/dashboard');
 			});
@@ -176,9 +175,33 @@ const controller = {
 				res.redirect('/dashboard');
 			})
 			.catch((err) => {
-				console.log(`ERROR Deleting story with id --> ${req.params.id}\n${err}`);
+				console.log(`ERROR Deleting story with id --> ${req.params.id}\n${err}\n`);
 				req.flash('error_msg', 'There was an error deleting your st0ry');
 				res.redirect('/dashboard');
+			});
+	},
+
+	postComment(req, res) {
+		Story.findOne({ _id: req.params.id })
+			.then((story) => {
+				const newComment = {
+					commentBody: req.body.commentBody,
+					commentUser: req.user.id,
+				};
+
+				// Add to comments array - first element in array
+				story.comments.unshift(newComment);
+				story.save()
+					.then((savedStory) => {
+						console.log(`New comment was added to story with id:${savedStory._id}\n`);
+						req.flash('success_msg', 'You just added a new comment!');
+						res.redirect(`/stories/show/${savedStory._id}`);
+					})
+					.catch((err) => {
+						console.log(`ERROR Saving new story with id --> ${req.params.id}:\n${err}\n`);
+						req.flash('error_msg', 'There was a fatal error adding your comment');
+						res.redirect('/dashboard');
+					});
 			});
 	},
 };

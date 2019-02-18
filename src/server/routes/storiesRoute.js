@@ -19,10 +19,13 @@ router.route('/add')
 
 // Show Single Story based on id parameter
 router.route('/show/:id')
-	.get(ensureAuthenticated, controller.getStory);
+	.get(controller.getStory);
 
 // Show Single Story based on id parameter
 router.route('/edit/:id')
 	.get(ensureAuthenticated, controller.getEdit);
+
+router.route('/comment/:id')
+	.post(controller.postComment);
 
 export default router;
