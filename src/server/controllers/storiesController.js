@@ -187,10 +187,10 @@ const controller = {
 						allowComments,
 					};
 
-					Story.findOneAndUpdate(req.params.id, updateStory)
-						.then((updatedStory) => {
-							console.log(`Story with id --> ${req.params.id} was partially updated updated:\n`, updatedStory);
-							req.flash('warning_msg', `Your st0ry could only be partially updated because the title '${req.body.title}' already exists`);
+					Story.updateOne({ _id: req.params.id }, updateStory)
+						.then(() => {
+							console.log(`Story with id --> ${req.params.id} was partially updated updated:\n`);
+							req.flash('warning_msg', `Your st0ry could only be partially updated because the title '${title}' already exists`);
 							res.redirect('/dashboard');
 						})
 						.catch((err) => {
@@ -204,13 +204,14 @@ const controller = {
 						status,
 						allowComments,
 					};
+					console.log(updateStory);
 					if (!story) {
 						updateStory.title = title;
 					}
 
-					Story.findOneAndUpdate(req.params.id, updateStory)
+					Story.updateOne({ _id: req.params.id }, updateStory)
 						.then((updatedStory) => {
-							console.log(`Story with id --> ${req.params.id} was updated:\n`, updatedStory);
+							console.log(`Story with id --> ${req.params.id} was updated\n`);
 							req.flash('success_msg', `You successfully updated your st0ry: '${title}'`);
 							res.redirect('/dashboard');
 						})
