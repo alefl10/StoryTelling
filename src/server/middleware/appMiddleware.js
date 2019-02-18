@@ -6,7 +6,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import strategy from '../../config/passport';
-import { passportSecret } from '../../config/private';
+import { passportSecret } from '../../config/keys';
 import {
 	truncate,
 	stripTags,

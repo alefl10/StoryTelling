@@ -1,6 +1,6 @@
 import app from './server/server';
 
-const { db } = require('./config/database');
+const { db } = require('./config/keys');
 
 const PORT = process.env.PORT || db.PORT;
 

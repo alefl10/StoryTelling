@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import appMiddleware from './middleware/appMiddleware';
 import { index, stories, auth } from './routes/routes';
 
-const { db } = require('../config/database');
+const { db } = require('../config/keys');
 
 // Connect to mongoose
 mongoose.connect(db.mongoURI, { useNewUrlParser: true })

@@ -210,7 +210,7 @@ const controller = {
 					}
 
 					Story.updateOne({ _id: req.params.id }, updateStory)
-						.then((updatedStory) => {
+						.then(() => {
 							console.log(`Story with id --> ${req.params.id} was updated\n`);
 							req.flash('success_msg', `You successfully updated your st0ry: '${title}'`);
 							res.redirect('/dashboard');

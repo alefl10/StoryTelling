@@ -4,7 +4,8 @@
 /.pnp
 .pnp.js
 
-# private
+# keys and private
+src/config/devKeys.js
 src/config/private.js
 
 # testing

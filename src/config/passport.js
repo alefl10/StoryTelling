@@ -1,5 +1,5 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { google } from './private';
+import { google } from './keys';
 import User from '../server/models/UserModel';
 
 export default function (passport) {
