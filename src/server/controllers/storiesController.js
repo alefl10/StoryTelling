@@ -83,6 +83,7 @@ const controller = {
 	getStory(req, res) {
 		Story.findById({ _id: req.params.id })
 			.populate('user') // Populates user with all the fields from the users collection - story has a reference to this collection
+			.populate('comments.commentUser')
 			.then((story) => {
 				console.log(story);
 				res.render('stories/show', { story });
